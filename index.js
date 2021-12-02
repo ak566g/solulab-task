@@ -26,8 +26,8 @@ mongoose.connect(process.env.DATABASE)
     console.log(err)
 })
 
-app.use('/api/product', productRoutes)
-app.use('/api/category', categoryRoutes)
+app.use('/product', productRoutes)
+app.use('/category', categoryRoutes)
 
 app.listen(port, ()=>{
     console.log(`server is running on ${port}`)

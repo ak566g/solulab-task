@@ -1,9 +1,10 @@
 const express = require('express')
+const category = require('../models/category')
 const router = express.Router()
 const Category = require('../models/category')
 
 //create category
-router.post('/', async (req, res)=>{
+router.post('/create', async (req, res)=>{
     const newCategory = new Category(req.body)
     try{
         const savedCategory = await newCategory.save()
@@ -14,18 +15,25 @@ router.post('/', async (req, res)=>{
 })
 
 // read all categories
-router.get('/', (req, res)=>{
+router.get('/readAll', (req, res)=>{
+    Category.find({}, (err, categories) => {
+        var categoryMap = {}
 
+        categories.forEach(category => {
+            categoryMap[category._id] = category
+        })
+        res.send(categoryMap)
+    })
 })
 
 //read category by id
-router.get('/:id', (req, res) => {
+router.get('/read', (req, res) => {
 
 })
 
 
 //update category
-router.put('/:id', async (req, res)=>{
+router.put('update', async (req, res)=>{
     try{
         const updatedCategory = await Category.findByIdAndUpdate(
             req.params.id,{
@@ -40,7 +48,7 @@ router.put('/:id', async (req, res)=>{
 })
 
 //delete category
-router.delete('/:id', (req, res)=>{
+router.delete('/delete', (req, res)=>{
 
 })
 
