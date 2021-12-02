@@ -1,8 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const Category = require('../models/category')
-const Product = require('../models/product')
-//create category
+
 router.post('/create', async (req, res)=>{
     const newCategory = new Category(req.body)
     try{
@@ -12,6 +11,8 @@ router.post('/create', async (req, res)=>{
         res.status(500).json(err)
     }
 })
+
+
 
 // read all categories
 router.get('/readAll', (req, res)=>{
