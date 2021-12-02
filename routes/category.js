@@ -1,13 +1,13 @@
 const express = require('express')
 const router = express.Router()
 const Category = require('../models/category')
-
+const Product = require('../models/product')
 //create category
-router.post('/create', (req, res)=>{
+router.post('/create', async (req, res)=>{
     const newCategory = new Category(req.body)
     try{
-        newCategory.save()
-        res.status(200).json(newCategory)
+        const savedCategory =await newCategory.save()
+        res.status(200).json(savedCategory)
     }catch(err){
         res.status(500).json(err)
     }
@@ -62,8 +62,22 @@ router.post('/update', (req, res)=>{
 })
 
 //delete category
-router.delete('/delete', (req, res)=>{
+router.post('/delete', (req, res)=>{
+    const category = Category.findOne({categoryId:req.body.categoryId})
+    if(!category){
+        res.status(400).json({
+            error:"Category does not exist"
+        })
+    }
 
+    Product.findOneAndDelete({categoryId: category._id})
+    Category.findOneAndDelete(req.body, (err, category) => {
+        if(err){
+            res.status(400).json({
+                error:"category cannot be found"
+            })
+        res.send(category)
+    })
 })
 
 module.exports = router

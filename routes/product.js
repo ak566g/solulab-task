@@ -62,8 +62,16 @@ router.put('/update', (req, res)=>{
 })
 
 // delete product by id
-router.delete('/delete', (req, res)=>{
+router.post('/delete', (req, res)=>{
+    Product.findOneAndDelete(req.body, (err, product) => {
+        if(err){
+            res.status(400).json({
+                error:"Product cannot be found"
+            })
+        }
 
+        res.send(product)
+    })
 })
 
 module.exports = router
