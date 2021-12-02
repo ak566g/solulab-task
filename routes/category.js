@@ -61,23 +61,4 @@ router.post('/update', (req, res)=>{
 
 })
 
-//delete category
-router.post('/delete', (req, res)=>{
-    const category = Category.findOne({categoryId:req.body.categoryId})
-    if(!category){
-        res.status(400).json({
-            error:"Category does not exist"
-        })
-    }
-
-    Product.findOneAndDelete({categoryId: category._id})
-    Category.findOneAndDelete(req.body, (err, category) => {
-        if(err){
-            res.status(400).json({
-                error:"category cannot be found"
-            })
-        res.send(category)
-    })
-})
-
 module.exports = router
