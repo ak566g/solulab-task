@@ -1,14 +1,13 @@
 const express = require('express')
-const category = require('../models/category')
 const router = express.Router()
 const Category = require('../models/category')
 
 //create category
-router.post('/create', async (req, res)=>{
+router.post('/create', (req, res)=>{
     const newCategory = new Category(req.body)
     try{
-        const savedCategory = await newCategory.save()
-        res.status(200).json(savedCategory)
+        newCategory.save()
+        res.status(200).json(newCategory)
     }catch(err){
         res.status(500).json(err)
     }
@@ -17,6 +16,11 @@ router.post('/create', async (req, res)=>{
 // read all categories
 router.get('/readAll', (req, res)=>{
     Category.find({}, (err, categories) => {
+
+        if(err){
+            res.status(500).json(err)
+        }
+
         var categoryMap = {}
 
         categories.forEach(category => {
@@ -27,24 +31,19 @@ router.get('/readAll', (req, res)=>{
 })
 
 //read category by id
-router.get('/read', (req, res) => {
-
+router.post('/read', (req, res) => {
+    Category.findOne({categoryId: req.body.categoryId}, (err, category) => {
+        if(err){
+            res.status(500).json(err)
+        }
+        res.send(category)
+    })
 })
 
 
 //update category
-router.put('update', async (req, res)=>{
-    try{
-        const updatedCategory = await Category.findByIdAndUpdate(
-            req.params.id,{
-                $set: req.body
-            },
-            {new:true}
-        )
-        res.status(200).json(updatedCategory)
-    }catch(err){
-        res.status(500).json(err)
-    }
+router.post('/update', (req, res)=>{
+    
 })
 
 //delete category

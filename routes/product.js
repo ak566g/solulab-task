@@ -6,7 +6,6 @@ const mongoose = require('mongoose')
 //create product
 router.post('/create', async (req, res) => {
     const newProduct = new Product(req.body)
-    
     try{
         const savedProduct = await newProduct.save()
         res.status(200).json(savedProduct)
@@ -33,8 +32,13 @@ router.get('/readAll', (req, res)=>{
 })
 
 //read product by id
-router.get('/read', (req, res) => {
-    
+router.post('/read', (req, res) => {
+    Product.findOne({productId : req.body.productId}, (err, product) => {
+        if(err){
+            res.status(500).json(err)
+        }
+        res.send(product)
+    })
 })
 
 //update product
