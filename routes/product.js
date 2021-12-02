@@ -43,7 +43,22 @@ router.post('/read', (req, res) => {
 
 //update product
 router.put('/update', (req, res)=>{
-    
+    if(!req.body.productId){
+        
+        res.status(400).json({
+            error:"Product Id is required"
+        })
+    }
+
+    Product.findOneAndUpdate({productId:req.body.productId}, req.body, {
+        new:true
+    }, (err, product) => {
+        if(err){
+            res.status(400).json(err)
+        }
+        res.send(product)
+    })
+
 })
 
 // delete product by id

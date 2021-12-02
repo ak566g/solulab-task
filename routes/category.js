@@ -43,7 +43,22 @@ router.post('/read', (req, res) => {
 
 //update category
 router.post('/update', (req, res)=>{
-    
+
+    if(!req.body.categoryId){
+        res.status(400).json({
+            error:"Category Id is required"
+        })
+    }
+
+    Category.findOneAndUpdate({categoryId: req.body.categoryId}, req.body, {
+        new: true
+    }, (err, category) => {
+        if(err){
+            res.status(500).json(err)
+        }
+        res.send(category)
+    })
+
 })
 
 //delete category
