@@ -42,7 +42,7 @@ router.post('/read', (req, res) => {
 })
 
 //update product
-router.put('/update', (req, res)=>{
+router.post('/update', (req, res)=>{
     if(!req.body.productId){
         
         res.status(400).json({
